@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Differential DO Prototype</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      color: #111;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 16px 24px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .prototype-wrapper {
+      flex: 1;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .prototype-frame {
+      width: 100%;
+      height: calc(100vh - 96px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      background: white;
+    }
+
+    @media (max-width: 768px) {
+      .prototype-wrapper {
+        padding: 12px;
+      }
+
+      header {
+        padding: 12px 16px;
+      }
+
+      header h1 {
+        font-size: 16px;
+      }
+
+      .prototype-frame {
+        height: calc(100vh - 72px);
+        border-radius: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <h1>Differential DO Prototype</h1>
+    </header>
+
+    <main class="prototype-wrapper">
+      <iframe
+        class="prototype-frame"
+        src="https://embed.figma.com/proto/JzU4dWPRiR3rtzYJ3i0uV7/Differential-DO?page-id=668%3A6820&node-id=786-11492&viewport=-3533%2C-1473%2C0.36&scaling=scale-down&content-scaling=fixed&starting-point-node-id=786%3A11492&embed-host=share"
+        allowfullscreen>
+      </iframe>
+    </main>
+  </div>
+</body>
+</html>
