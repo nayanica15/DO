@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Earnings | Commissions</title>
+
+  <style>
+    :root {
+      --bg: #f8f8ff;
+      --white: #ffffff;
+      --text-primary: #353543;
+      --text-secondary: #616173;
+      --purple: #9f2089;
+      --purple-light: #d9a6d0;
+      --border: #eaeaf2;
+      --border-dark: #cecede;
+      --pink-card: #ffe7fb;
+      --warning: #fff4d7;
+      --radius-card: 8px;
+      --radius-large: 16px;
+      --app-width: 360px;
+      --content-width: 328px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family:
+        "Mier B02",
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .app {
+      width: 100%;
+      max-width: var(--app-width);
+      min-height: 100dvh;
+      background: var(--bg);
+      position: relative;
+      padding-top: 104px;
+      padding-bottom: 96px;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      z-index: 20;
+      width: 100%;
+      max-width: var(--app-width);
+      height: 56px;
+      transform: translateX(-50%);
+      background: var(--white);
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+    }
+
+    .top-bar__title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 16px;
+      letter-spacing: 0.07px;
+      text-transform: uppercase;
+    }
+
+    .tabs {
+      position: fixed;
+      top: 56px;
+      left: 50%;
+      z-index: 20;
+      width: 100%;
+      max-width: var(--app-width);
+      height: 48px;
+      transform: translateX(-50%);
+      background: var(--white);
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: stretch;
+    }
+
+    .tab {
+      min-width: 109px;
+      padding: 16px 16px 0;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.02px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tab--active {
+      color: var(--purple);
+      font-weight: 600;
+    }
+
+    .tab__indicator {
+      width: 100%;
+      height: 2px;
+      border-radius: 2px 2px 0 0;
+      background: transparent;
+    }
+
+    .tab--active .tab__indicator {
+      background: var(--purple);
+    }
+
+    .content {
+      background: var(--white);
+      padding: 16px;
+    }
+
+    .content + .content {
+      margin-top: 0;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section + .section {
+      margin-top: 16px;
+    }
+
+    .section-header {
+      width: var(--content-width);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 20px;
+    }
+
+    .date-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 16px;
+      letter-spacing: 0.07px;
+    }
+
+    .chevron-down {
+      width: 16px;
+      height: 16px;
+      display: inline-grid;
+      place-items: center;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .card {
+      width: var(--content-width);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+
+    .info-visual {
+      height: 445px;
+      position: relative;
+      background: var(--pink-card);
+      border-radius: var(--radius-large);
+      overflow: hidden;
+      border: 0;
+    }
+
+    .info-visual__title {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      margin: 0;
+      color: #000000;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 20px;
+    }
+
+    .phone {
+      position: absolute;
+      border-radius: 7px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.72)),
+        linear-gradient(135deg, #f3b4e8, #ffffff 55%, #d7d7ea);
+      box-shadow: 0 6px 14px rgba(53, 53, 67, 0.12);
+      border: 1px solid rgba(53, 53, 67, 0.08);
+      overflow: hidden;
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      width: 26%;
+      height: 3px;
+      transform: translateX(-50%);
+      border-radius: 99px;
+      background: rgba(53, 53, 67, 0.22);
+    }
+
+    .phone::after {
+      content: "";
+      position: absolute;
+      left: 9px;
+      right: 9px;
+      bottom: 10px;
+      height: 35%;
+      border-radius: 6px;
+      background:
+        linear-gradient(90deg, rgba(159, 32, 137, 0.18), rgba(159, 32, 137, 0.04)),
+        repeating-linear-gradient(
+          180deg,
+          rgba(53, 53, 67, 0.16) 0,
+          rgba(53, 53, 67, 0.16) 2px,
+          transparent 2px,
+          transparent 8px
+        );
+    }
+
+    .phone--creator {
+      width: 65px;
+      height: 142px;
+      left: 21px;
+      top: 160px;
+    }
+
+    .phone--same {
+      width: 54px;
+      height: 117px;
+      left: 153px;
+      top: 43px;
+      border-radius: 4.5px;
+    }
+
+    .phone--different {
+      width: 54px;
+      height: 114px;
+      left: 153px;
+      top: 185px;
+      border-radius: 4.13px;
+    }
+
+    .phone--none {
+      width: 53px;
+      height: 120px;
+      left: 153px;
+      top: 313px;
+      border-radius: 4.45px;
+    }
+
+    .visual-label {
+      position: absolute;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .visual-label--post {
+      left: 25px;
+      top: 309px;
+      font-size: 15px;
+      line-height: 20px;
+      letter-spacing: 0.02px;
+    }
+
+    .earning-copy {
+      position: absolute;
+      left: 216px;
+      width: 89px;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 16px;
+    }
+
+    .earning-copy--same {
+      top: 99px;
+    }
+
+    .earning-copy--different {
+      top: 230px;
+    }
+
+    .earning-copy--none {
+      top: 369px;
+    }
+
+    .earning-copy u {
+      text-underline-offset: 2px;
+    }
+
+    .badge {
+      position: absolute;
+      left: 216px;
+      min-height: 20px;
+      padding: 4px 6px;
+      border-radius: 48px;
+      color: var(--text-primary);
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 12px;
+      letter-spacing: 0.12px;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .badge--high {
+      top: 71px;
+      background: var(--purple-light);
+    }
+
+    .badge--mid {
+      top: 202px;
+      background: var(--border-dark);
+    }
+
+    .badge--zero {
+      top: 341px;
+      background: var(--border-dark);
+    }
+
+    .flow-line {
+      position: absolute;
+      background: var(--border-dark);
+    }
+
+    .flow-line--vertical {
+      width: 1px;
+      height: 275px;
+      left: 123px;
+      top: 98px;
+    }
+
+    .flow-line--creator {
+      width: 30px;
+      height: 1px;
+      left: 93px;
+      top: 242px;
+    }
+
+    .flow-line--same,
+    .flow-line--different,
+    .flow-line--none {
+      width: 26px;
+      height: 1px;
+      left: 123px;
+    }
+
+    .flow-line--same {
+      top: 98px;
+    }
+
+    .flow-line--different {
+      top: 242px;
+    }
+
+    .flow-line--none {
+      top: 373px;
+    }
+
+    .summary-card {
+      height: 163px;
+      padding: 11px 12px 0;
+      position: relative;
+    }
+
+    .summary-total {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .summary-total__label {
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 20px;
+      letter-spacing: 0.02px;
+    }
+
+    .summary-total__amount {
+      font-size: 25px;
+      font-weight: 700;
+      line-height: 28px;
+    }
+
+    .dotted-line {
+      border-top: 1px dashed var(--border);
+    }
+
+    .summary-card .dotted-line {
+      margin-top: 12px;
+    }
+
+    .commission-breakup {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .breakup-row {
+      min-height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .breakup-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.02px;
+    }
+
+    .breakup-amount {
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 20px;
+      letter-spacing: 0.02px;
+    }
+
+    .mini-badge {
+      padding: 4px 6px;
+      border-radius: 48px;
+      background: var(--border);
+      color: var(--text-secondary);
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 12px;
+      letter-spacing: 0.12px;
+      white-space: nowrap;
+    }
+
+    .card-link {
+      width: 100%;
+      min-height: 38px;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 16px;
+      letter-spacing: 0.07px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0;
+    }
+
+    .chevron-right {
+      width: 16px;
+      height: 16px;
+      display: inline-grid;
+      place-items: center;
+      font-size: 22px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .pending-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 12px;
+    }
+
+    .pending-inner {
+      padding: 0 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pending-main-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .pending-label {
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 20px;
+      letter-spacing: 0.02px;
+    }
+
+    .pending-amount {
+      color: var(--text-primary);
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 24px;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .meta-label {
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.13px;
+    }
+
+    .meta-value {
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 16px;
+    }
+
+    .warning-strip {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--warning);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .warning-icon {
+      width: 16px;
+      height: 16px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+
+    .warning-text {
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.13px;
+    }
+
+    .payment-section {
+      margin-top: 0;
+      padding-top: 16px;
+    }
+
+    .payment-card {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .payment-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .payment-top {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .payment-row {
+      width: 304px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .payment-label {
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 20px;
+      letter-spacing: 0.02px;
+    }
+
+    .payment-amount {
+      color: var(--text-primary);
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 24px;
+    }
+
+    .payment-period {
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.03px;
+    }
+
+    .payment-note {
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.13px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      z-index: 30;
+      width: 100%;
+      max-width: var(--app-width);
+      transform: translateX(-50%);
+      background: var(--white);
+      box-shadow: 0 -4px 4px rgba(34, 34, 34, 0.12);
+      border-top: 1px solid var(--border-dark);
+      padding: 4px 16px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-item {
+      min-width: 60px;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.13px;
+    }
+
+    .nav-item--active {
+      color: var(--purple);
+    }
+
+    .nav-icon {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+    }
+
+    .nav-icon svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+
+    .nav-icon path,
+    .nav-icon rect,
+    .nav-icon line,
+    .nav-icon polyline,
+    .nav-icon circle {
+      stroke: currentColor;
+    }
+
+    @media (min-width: 480px) {
+      body {
+        padding: 24px 0;
+      }
+
+      .app {
+        min-height: calc(100dvh - 48px);
+        box-shadow: 0 12px 40px rgba(53, 53, 67, 0.12);
+        border-radius: 24px;
+        overflow: hidden;
+      }
+
+      .top-bar,
+      .tabs,
+      .bottom-nav {
+        max-width: var(--app-width);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header class="top-bar">
+      <div class="top-bar__title">Earnings</div>
+    </header>
+
+    <nav class="tabs" aria-label="Earnings tabs">
+      <button class="tab tab--active" type="button" aria-current="page">
+        <span>Commissions</span>
+        <span class="tab__indicator"></span>
+      </button>
+
+      <button class="tab" type="button">
+        <span>Payments</span>
+        <span class="tab__indicator"></span>
+      </button>
+    </nav>
+
+    <section class="content">
+      <div class="section">
+        <div class="section-header">
+          <h1 class="section-title">Commissions</h1>
+
+          <button class="date-filter" type="button" aria-label="Change date range">
+            <span>Last 7 Days</span>
+            <span class="chevron-down">▼</span>
+          </button>
+        </div>
+
+        <article class="card info-visual" aria-labelledby="earning-change-title">
+          <h2 class="info-visual__title" id="earning-change-title">
+            Way of earning has changed
+          </h2>
+
+          <div class="phone phone--creator" aria-hidden="true"></div>
+          <div class="phone phone--same" aria-hidden="true"></div>
+          <div class="phone phone--different" aria-hidden="true"></div>
+          <div class="phone phone--none" aria-hidden="true"></div>
+
+          <div class="visual-label visual-label--post">You post</div>
+
+          <div class="badge badge--high">Earn 15% to 40%</div>
+          <div class="badge badge--mid">Earn 5% to 15%</div>
+          <div class="badge badge--zero">0% earning</div>
+
+          <div class="earning-copy earning-copy--same">
+            Viewers buy <u>same item</u>
+          </div>
+
+          <div class="earning-copy earning-copy--different">
+            Viewers buy <u>different item</u>
+          </div>
+
+          <div class="earning-copy earning-copy--none">
+            No commission tag
+          </div>
+
+          <span class="flow-line flow-line--vertical" aria-hidden="true"></span>
+          <span class="flow-line flow-line--creator" aria-hidden="true"></span>
+          <span class="flow-line flow-line--same" aria-hidden="true"></span>
+          <span class="flow-line flow-line--different" aria-hidden="true"></span>
+          <span class="flow-line flow-line--none" aria-hidden="true"></span>
+        </article>
+
+        <article class="card summary-card" aria-labelledby="confirmed-commissions-title">
+          <div class="summary-total">
+            <div class="summary-total__label" id="confirmed-commissions-title">
+              Confirmed Commissions
+            </div>
+            <div class="summary-total__amount">₹2,350</div>
+          </div>
+
+          <div class="dotted-line"></div>
+
+          <div class="commission-breakup">
+            <div class="breakup-row">
+              <div class="breakup-label">
+                <span>Direct Commission</span>
+                <span class="mini-badge">min 15%</span>
+              </div>
+              <div class="breakup-amount">₹1,800</div>
+            </div>
+
+            <div class="breakup-row">
+              <div class="breakup-label">Indirect Commissions</div>
+              <div class="breakup-amount">₹550</div>
+            </div>
+          </div>
+
+          <button class="card-link" type="button">
+            <span>View detailed calculations</span>
+            <span class="chevron-right">›</span>
+          </button>
+        </article>
+
+        <article class="card pending-card" aria-labelledby="pending-commissions-title">
+          <div class="pending-inner">
+            <div class="pending-main-row">
+              <div class="pending-label" id="pending-commissions-title">
+                Pending Commissions
+              </div>
+              <div class="pending-amount">₹1,550</div>
+            </div>
+
+            <div class="dotted-line"></div>
+
+            <div class="meta-row">
+              <div class="meta-label">Return Percentage</div>
+              <div class="meta-value">21.2%</div>
+            </div>
+          </div>
+
+          <div class="warning-strip">
+            <span class="warning-icon" aria-hidden="true">!</span>
+            <span class="warning-text">
+              Only some part of these earnings will get confirmed
+            </span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="content payment-section">
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Upcoming Payment</h2>
+        </div>
+
+        <article class="card payment-card" aria-labelledby="net-payment-title">
+          <div class="payment-details">
+            <div class="payment-top">
+              <div class="payment-row">
+                <div class="payment-label" id="net-payment-title">Net Payment</div>
+                <div class="payment-amount">₹2,350</div>
+              </div>
+
+              <div class="payment-period">(29 July - 4 Aug)</div>
+            </div>
+
+            <div class="payment-note">
+              Note - Final amount to be calculated till 4th Aug
+            </div>
+          </div>
+
+          <button class="card-link" type="button">
+            <span>View all payments</span>
+            <span class="chevron-right">›</span>
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="nav-item" type="button">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M3 10.5L12 3l9 7.5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M5.5 10v10h13V10" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M10 20v-6h4v6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span>Home</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <line x1="5" y1="20" x2="5" y2="8" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="12" y1="20" x2="12" y2="4" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="19" y1="20" x2="19" y2="12" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="3" y1="20" x2="21" y2="20" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span>Performance</span>
+      </button>
+
+      <button class="nav-item nav-item--active" type="button" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3.5" y="6" width="17" height="12" rx="1.8" stroke-width="1.8" />
+            <line x1="3.5" y1="10" x2="20.5" y2="10" stroke-width="1.8" />
+            <line x1="7" y1="15" x2="11" y2="15" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span>Earnings</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <line x1="5" y1="7" x2="19" y2="7" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="5" y1="12" x2="19" y2="12" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="5" y1="17" x2="19" y2="17" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span>Menu</span>
+      </button>
+    </nav>
+  </main>
+</body>
+</html>
